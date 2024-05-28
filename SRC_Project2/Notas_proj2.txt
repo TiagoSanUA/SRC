@@ -1,0 +1,9 @@
+Exfiltraçao -> ver pela quantidade de bytes de upload
+
+Comunicaçoes nao habituias -> IPs de origem estranahas,...
+
+Botnets -> comunicaçoes em grande numero entre maquinas, que depois é feita upload
+
+C and C (Comand and Control) (Troca anormal de msg DNS) -> encontrar trocal em numero anormal de msg(nº de pacotes) e tambem o tamanho desses pacotes
+
+Clientes externos acederem de forma estranha aos servidores (anormal: intervalos entre fluxos) (acesso continuo quase sem pausas a servidor)

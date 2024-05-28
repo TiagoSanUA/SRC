@@ -1,0 +1,4 @@
+pygeoip
+fastparquet
+dnspython
+matplotlib
