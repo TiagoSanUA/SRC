@@ -1,0 +1,37 @@
+# IPS BEING USED
+IPs used: ['192.168.109.227' '192.168.109.225' '192.168.109.230' ...
+ '76.223.173.178' '52.95.28.69' '40.79.80.84']
+
+
+Protocols used: ['tcp' 'udp']
+Ports used: [443  53]
+Port 53 is only used by UDP
+Port 443 is used by TCP
+
+
+Countries that received traffic: ['' 'GB' 'PT' 'US' 'DE' 'NA' 'ES' 'NL' 'BR' 'SE' 'IE' 'JP' 'ID' 'IT' 'CA'
+ 'FR' 'HK' 'IN' 'AU' 'KR' 'ZA' 'AE' 'SG' 'CH' 'CL' 'BH' 'BE' 'IL' 'CN'
+ 'NO' 'PL' 'MY' 'SA' 'NZ' 'TW' 'MX' 'FI']
+
+ Organizations: [None 'AS32934 FACEBOOK' 'AS15169 GOOGLE' 'AS14907 WIKIMEDIA'
+ 'AS3243 Servicos De Comunicacoes E Multimedia S.A.' 'AS29789 REFLECTED'
+ 'AS2860 Nos Comunicacoes, S.A.' 'AS8068 MICROSOFT-CORP-MSN-AS-BLOCK'
+ 'AS24940 Hetzner Online GmbH'
+ 'AS15525 Servicos De Comunicacoes E Multimedia S.A.'
+ 'AS63949 Akamai Connected Cloud' 'AS31898 ORACLE-BMC-31898'
+ 'AS13335 CLOUDFLARENET' 'AS13414 TWITTER' 'AS54113 FASTLY'
+ 'AS8075 MICROSOFT-CORP-MSN-AS-BLOCK'
+ 'AS1930 Fundacao para a Ciencia e a Tecnologia, I.P.'
+ 'AS14061 DIGITALOCEAN-ASN' 'AS32244 LIQUIDWEB'
+ 'AS8657 Servicos De Comunicacoes E Multimedia S.A.'
+ 'AS46652 SERVERSTACK-ASN' 'AS396982 GOOGLE-CLOUD-PLATFORM'
+ 'AS16509 AMAZON-02' 'AS14618 AMAZON-AES' 'AS9186 Infocomunicacoes, S.A.'
+ 'AS8070 MICROSOFT-CORP-MSN-AS-BLOCK' 'AS19551 INCAPSULA'
+ 'AS16625 AKAMAI-AS' 'AS62540 DRAKE-AS'
+ 'AS24768 Almouroltec Servicos De Informatica E Internet Lda'
+ 'AS35995 TWITTER' 'AS62785 AMAZON-FC' 'AS20940 Akamai International B.V.'
+ 'AS63179 TWITTER' 'AS7224 AMAZON-AS' 'AS7018 ATT-INTERNET4'
+ 'AS54115 FACEBOOK-CORP' 'AS63194 CRASH' 'AS6167 CELLCO-PART'
+ 'AS36459 GITHUB' 'AS43515 Google Ireland Limited'
+ 'AS8987 Amazon Data Services Ireland Ltd'
+ 'AS8069 MICROSOFT-CORP-MSN-AS-BLOCK']
