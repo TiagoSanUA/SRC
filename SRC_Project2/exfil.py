@@ -53,16 +53,6 @@ exfiltration_candidates = bytes_comparison[
     (bytes_comparison['avg_down_bytes_test'] > (bytes_comparison['avg_down_bytes_normal'] * 1.5))
 ]
 
-# Identify external flows
-external_flows = data.loc[(data['src_ip'].str.startswith('192.168.109.')) & (~data['dst_ip'].str.startswith('192.168.109.'))]
-external_flows_test = test.loc[(test['src_ip'].str.startswith('192.168.109.')) & (~test['dst_ip'].str.startswith('192.168.109.'))]
-
-# Potential exfiltration
-exfilt = data.loc[(data['src_ip'].isin(exfiltration_candidates['src_ip'])) & (~data['dst_ip'].str.startswith('192.168.109.'))]
-exfilt = exfilt[['src_ip', 'dst_ip']]
-# Add country and org
-exfilt['dst_cc'] = exfilt['dst_ip'].apply(lambda x: gi.country_code_by_addr(x))
-exfilt['dst_org'] = exfilt['dst_ip'].apply(lambda x: gi2.org_by_addr(x))
 
 # Exfiltration bytes - test
 exfilt_up_down = test.loc[(test['src_ip'].isin(exfiltration_candidates['src_ip'])) & (~test['dst_ip'].str.startswith('192.168.109.'))].groupby(['src_ip']).agg({'up_bytes': 'sum', 'down_bytes': 'sum'}).reset_index()
