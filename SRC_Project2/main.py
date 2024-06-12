@@ -15,7 +15,7 @@ def ts_to_hours(ts):
 
 
 
-datafile = 'dataset9/data9.parquet'
+datafile = 'dataset9/test9.parquet'
 
 #############################################################################################
 #       Getting the data from the parquet file
@@ -39,63 +39,99 @@ data = pd.read_parquet(datafile)
 
 #put all Timestamps in hours
 data['ts_to_hours'] = data['timestamp'].apply(lambda x: ts_to_hours(x))
-print(data['ts_to_hours'])
+# print(data['ts_to_hours'])
 
-print("Uploads: " + str(data['up_bytes'].describe()))
-print("Downloads: " + str(data['down_bytes'].describe()))
+# print("Uploads: " + str(data['up_bytes'].describe()))
+# print("Downloads: " + str(data['down_bytes'].describe()))
 
 # Check what protocols were used
-protocols = data['proto'].unique()
-print("Protocols used: " + str(protocols))
-data['proto'].value_counts().plot(kind='bar')
-plt.title('Protocols used and their frequency')
-plt.xlabel('Protocol')
-plt.ylabel('Occurences')
-plt.savefig("./plots/protocol_frequency.png")
+# protocols = data['proto'].unique()
+# print("Protocols used: " + str(protocols))
+# data['proto'].value_counts().plot(kind='bar')
+# plt.title('Protocols used and their frequency')
+# plt.xlabel('Protocol')
+# plt.ylabel('Occurences')
+# plt.savefig("./plots/protocol_frequency.png")
 
 # Check what ports were used
-ports = data['port'].unique()
-print("Ports used: " + str(ports))
-data['port'].value_counts().plot(kind='bar')
-plt.title('Ports used and their frequency')
-plt.xlabel('Port')
-plt.ylabel('Occurences')
-plt.savefig("./plots/port_frequency.png")
+# ports = data['port'].unique()
+# print("Ports used: " + str(ports))
+# data['port'].value_counts().plot(kind='bar')
+# plt.title('Ports used and their frequency')
+# plt.xlabel('Port')
+# plt.ylabel('Occurences')
+# plt.savefig("./plots/port_frequency.png")
 
-# Check what IPs were used
-ips = data['dst_ip'].unique()
-print("IPs used: " + str(ips))
+# CHECK WHAT IPs WERE USED
+
+# ips = data['dst_ip'].unique()
+# print("IPs used: " + str(ips))
 
 # UDP -> 53 -> DNS
 # UDP -> 443 -> QUIC
 # TCP -> 443 -> HTTPS
 
-# verify if port 53 is used only by UDP
-tcp_53 = data.loc[(data['proto'] != 'udp') & (data['port']==53)]
-if tcp_53.empty:
-    print("Port 53 is only used by UDP")
-else:
-    print("Port 53 is used by TCP")
+#
+# VERIFY IF PORT 53 IS USED ONLY BY UDP
+#
+# tcp_53 = data.loc[(data['proto'] != 'udp') & (data['port']==53)]
+# if tcp_53.empty:
+#     print("Port 53 is only used by UDP")
+# else:
+#     print("Port 53 is used by TCP" + str(tcp_53))
 
-# verify if port 443 is used only by UDP
-tcp_443 = data.loc[(data['proto'] != 'udp') & (data['port']==443)]
-if tcp_443.empty:
-    print("Port 443 is only used by UDP")
-else:
-    print("Port 443 is used by TCP")
 
-#list countries that received traffic
-data['dst_cc'] = data['dst_ip'].apply(lambda x: gi.country_code_by_addr(x))
-countries = data['dst_cc'].unique()
-print("Countries that received traffic: " + str(countries))
+# VERIFY IF PORT 443 IS USED ONLY BY UDP
+#
+# tcp_443 = data.loc[(data['proto'] != 'udp') & (data['port']==443)]
+# if tcp_443.empty:
+#     print("Port 443 is only used by UDP")
+# else:
+#     print("Port 443 is used by TCP\n" + str(tcp_443))
 
-# Check the connections to each organization
-data['dst_org'] = data['dst_ip'].apply(lambda x: gi2.org_by_addr(x))
-organizations = data['dst_org'].unique()
-print("Organizations: " + str(organizations))
+
+#LIST COUNTRIES THAT RECEIVED TRAFFIC
+
+# data['dst_cc'] = data['dst_ip'].apply(lambda x: gi.country_code_by_addr(x))
+# countries = data['dst_cc'].unique()
+# print("Countries that received traffic: " + str(countries))
+
+
+# CHECK THE CONNECTIONNS TO EACH ORG
+
+# data['dst_org'] = data['dst_ip'].apply(lambda x: gi2.org_by_addr(x))
+# organizations = data['dst_org'].unique()
+# print("Organizations: " + str(organizations))
 
 #NET = ipaddress.IPv4Network('192.168.109.0/24')
 
-# DNS resolution
-#dns_info = data.loc[(data['proto']=='udp') & (data['port']==53)].groupby(['dst_ip'])['up_bytes'].sum()
-#print(dns_info)
+# Flows from internal IPs to internal IPs (192.168.109.X -> Private IPs)
+internal_flows = data.loc[(data['src_ip'].str.startswith('192.168.109.')) & (data['dst_ip'].str.startswith('192.168.109.'))]
+
+# UDP flows
+udpF = internal_flows.loc[internal_flows['proto'] == 'udp'].groupby(['src_ip']).count()
+print("\nUDP flows for each IP:\n" + str(udpF))
+
+# TCP flows
+tcpF = internal_flows.loc[internal_flows['proto'] == 'tcp'].groupby(['src_ip']).count()
+print("\nTCP flows for each IP:\n" + str(tcpF))
+
+# Verify which IPs belong to servers (IPs that are private (start with 192.168.109.X) that have more communication, both as source or destination)
+src_ips = data.loc[data['src_ip'].str.startswith('192.168.109.')].groupby('src_ip').size().reset_index(name='counts')
+dst_ips = data.loc[data['dst_ip'].str.startswith('192.168.109.')].groupby('dst_ip').size().reset_index(name='counts')
+
+# Check what's the average value of the counts
+print("Average value of the counts: " + str(src_ips['counts'].mean()))
+
+# Combine the counts
+server_ips = src_ips.set_index('src_ip').add(dst_ips.set_index('dst_ip'), fill_value=0).reset_index().sort_values(by='counts', ascending=False).reset_index(drop=True)
+print("Server IPs: " + str(server_ips))
+
+# Plot the top 6 server IPs
+server_ips.head(5).plot(kind='bar', x='index', y='counts')
+plt.title('Potential server IPs')
+plt.xlabel('IP')
+plt.ylabel('Flows')
+plt.savefig('./plots/top5_potential_server_ips.png')
+
+
