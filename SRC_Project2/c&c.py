@@ -23,10 +23,6 @@ bpublic=data.apply(lambda x: ipaddress.IPv4Address(x['dst_ip']) not in NET,axis=
 #Geolocalization of public destination adddress
 cc=data[bpublic]['dst_ip'].apply(lambda y:gi.country_code_by_addr(y)).to_frame(name='cc')
 
-# dns_conns = data.loc[(data['dst_ip']=='192.168.109.227') | (data['dst_ip']=='192.168.109.224')].groupby(['src_ip'])['up_bytes'].count().sort_values()
-# print(dns_conns[-15:])
-
-
 src_ips = data[data['src_ip'].str.startswith('192.168.109.')].groupby('src_ip').size().reset_index(name='counts')
 dst_ips = data[data['dst_ip'].str.startswith('192.168.109.')].groupby('dst_ip').size().reset_index(name='counts')
 
@@ -45,7 +41,7 @@ filter_data = server_ips[server_ips['index'].isin(top_10_server_ips_test)]
 merge = pd.merge(filter_data, server_ips_test, how='inner', left_on='index', right_on='index', suffixes=('_normal', '_test'))
 
 # Make a plot for this differences (top 10 so that there are some references of normal behaviour)
-merge.plot(x='index', y=['counts_normal', 'counts_test'], kind='bar', title="IPs (normally, Server IPs) with more communication", xlabel="IP", ylabel="Flows")
+merge.plot(x='index', y=['counts_normal', 'counts_test'], kind='bar', title="IPs with more communication", xlabel="IP", ylabel="Flows")
 plt.savefig('./plots/ips_with_more_communication.png')
 
 #####

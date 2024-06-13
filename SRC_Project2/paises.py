@@ -21,6 +21,9 @@ NET = ipaddress.IPv4Network('192.168.109.0/24')
 # Geolocalization of destination IP addresses for inside-to-inside communications
 data['dst_cc'] = data['dst_ip'].apply(lambda x: gi.country_code_by_addr(x) if ipaddress.IPv4Address(x) not in NET else None)
 data_countries = data['dst_cc'].dropna().unique()
+#print number of counntries
+print(f"Number of countries in data: {len(data_countries)}")
+
 
 # Geolocalization of destination IP addresses for inside-to-outside communications
 test['dst_cc'] = test['dst_ip'].apply(lambda x: gi.country_code_by_addr(x) if ipaddress.IPv4Address(x) not in NET else None)
