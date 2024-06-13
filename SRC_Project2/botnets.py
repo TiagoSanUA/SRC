@@ -55,11 +55,12 @@ print(addresses.sort_values())
 # 192.168.109.126    8
 # 192.168.109.168    8
 
+
 addresses = data2.loc[((data2['src_ip']=='192.168.109.126') | (data2['src_ip']=='192.168.109.14') | (data2['src_ip']=='192.168.109.168') | (data2['src_ip']=='192.168.109.31') | (data2['src_ip']=='192.168.109.61')) & (data2['pub']==False) ].groupby(['src_ip'])['dst_ip'].unique()
 print(addresses)
 
 # ver melhor esta linha
-addresses = data2.loc[((data2['src_ip']=='192.168.109.126') | (data2['src_ip']=='192.168.109.14') | (data2['src_ip']=='192.168.103.168') | (data2['src_ip']=='192.168.109.31') | (data2['src_ip']=='192.168.109.61')) & (data2['pub']==False)].groupby(['src_ip'])['dst_ip'].nunique()
+addresses = data2.loc[((data2['src_ip']=='192.168.109.126') | (data2['src_ip']=='192.168.109.14') | (data2['src_ip']=='192.168.109.168') | (data2['src_ip']=='192.168.109.31') | (data2['src_ip']=='192.168.109.61')) & (data2['pub']==False)].groupby(['src_ip'])['dst_ip'].nunique()
 print(addresses)
 
 # Possiveis botnets
@@ -67,5 +68,6 @@ print(addresses)
 # src_ip
 # 192.168.109.126    8
 # 192.168.109.14     8
+# 192.168.109.168    8
 # 192.168.109.31     8
 # 192.168.109.61     7

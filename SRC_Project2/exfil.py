@@ -24,8 +24,6 @@ bpublic=data.apply(lambda x: ipaddress.IPv4Address(x['dst_ip']) not in NET,axis=
 cc=data[bpublic]['dst_ip'].apply(lambda y:gi.country_code_by_addr(y)).to_frame(name='cc')
 
 
-## version 2
-
 # Check the number of bytes uploaded and downloaded
 normal_up_down = data.loc[~data['dst_ip'].str.startswith('192.168.109.')].groupby(['src_ip']).agg({'up_bytes': 'sum', 'down_bytes': 'sum'}).reset_index()
 # Check the number of flows to the internet
